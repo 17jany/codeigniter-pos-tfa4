@@ -49,6 +49,22 @@
             transform: translateY(-2px);
         }
 
+        .logged-in-user {
+            padding: 9px 8px;
+            color: #d4d4d4;
+            font-size: 14px;
+        }
+
+        nav .logout-link {
+            color: #ffffff;
+            background-color: #b42318;
+        }
+
+        nav .logout-link:hover {
+            color: #ffffff;
+            background-color: #8f1c13;
+        }
+
         main {
             width: min(1100px, 88%);
             min-height: calc(100vh - 190px);
@@ -233,6 +249,11 @@
                 margin-bottom: 5px;
             }
 
+            .logged-in-user {
+                width: 100%;
+                padding: 6px 0;
+            }
+
             main {
                 width: 92%;
                 margin: 25px auto;
@@ -262,33 +283,52 @@
         <span class="brand">SIMPLE POS</span>
 
         <a
-            href="/"
+            href="<?= site_url('/') ?>"
             class="<?= $title === 'Home' ? 'active' : '' ?>"
         >
             Home
         </a>
 
         <a
-            href="/about"
+            href="<?= site_url('about') ?>"
             class="<?= $title === 'About' ? 'active' : '' ?>"
         >
             About
         </a>
 
-        <a
-            href="/customers"
-            class="<?= $title === 'Customer Accounts' ? 'active' : '' ?>"
-        >
-            Customers
-        </a>
+        <?php if (session()->get('isLoggedIn')): ?>
+            <a
+                href="<?= site_url('customers') ?>"
+                class="<?= $title === 'Customer Accounts' ? 'active' : '' ?>"
+            >
+                Customers
+            </a>
 
-        <a
-            href="/users"
-            class="<?= $title === 'User Accounts' ? 'active' : '' ?>"
-        >
-            Users
-        </a>
+            <a
+                href="<?= site_url('users') ?>"
+                class="<?= $title === 'User Accounts' ? 'active' : '' ?>"
+            >
+                Users
+            </a>
+
+            <span class="logged-in-user">
+                <?= esc(session()->get('full_name')) ?>
+            </span>
+
+            <a
+                href="<?= site_url('logout') ?>"
+                class="logout-link"
+            >
+                Logout
+            </a>
+        <?php else: ?>
+            <a
+                href="<?= site_url('login') ?>"
+                class="<?= $title === 'Login' ? 'active' : '' ?>"
+            >
+                Login
+            </a>
+        <?php endif; ?>
     </nav>
 
     <main>
-

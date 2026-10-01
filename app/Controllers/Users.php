@@ -40,7 +40,7 @@ class Users extends BaseController
 
         $rules = [
             'username' => [
-                'rules'  => 'required|max_length[50]|is_unique[users.username]',
+                'rules' => 'required|max_length[50]|is_unique[users.username]',
                 'errors' => [
                     'required'   => 'Username is required.',
                     'max_length' => 'Username cannot exceed 50 characters.',
@@ -48,10 +48,25 @@ class Users extends BaseController
                 ],
             ],
             'full_name' => [
-                'rules'  => 'required|max_length[100]',
+                'rules' => 'required|max_length[100]',
                 'errors' => [
                     'required'   => 'Full name is required.',
                     'max_length' => 'Full name cannot exceed 100 characters.',
+                ],
+            ],
+            'password' => [
+                'rules' => 'required|min_length[8]|max_length[255]',
+                'errors' => [
+                    'required'   => 'Password is required.',
+                    'min_length' => 'Password must contain at least 8 characters.',
+                    'max_length' => 'Password cannot exceed 255 characters.',
+                ],
+            ],
+            'password_confirm' => [
+                'rules' => 'required|matches[password]',
+                'errors' => [
+                    'required' => 'Please confirm the password.',
+                    'matches'  => 'The password confirmation does not match.',
                 ],
             ],
         ];
@@ -65,8 +80,12 @@ class Users extends BaseController
         $userModel = new UserModel();
 
         $userModel->insert([
-            'username'   => $this->request->getPost('username'),
-            'full_name'  => $this->request->getPost('full_name'),
+            'username' => trim($this->request->getPost('username')),
+            'full_name' => trim($this->request->getPost('full_name')),
+            'password' => password_hash(
+                $this->request->getPost('password'),
+                PASSWORD_DEFAULT
+            ),
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -121,7 +140,7 @@ class Users extends BaseController
                 ],
             ],
             'full_name' => [
-                'rules'  => 'required|max_length[100]',
+                'rules' => 'required|max_length[100]',
                 'errors' => [
                     'required'   => 'Full name is required.',
                     'max_length' => 'Full name cannot exceed 100 characters.',
@@ -130,6 +149,7 @@ class Users extends BaseController
         ];
 
         $avatar = $this->request->getFile('avatar');
+
         $hasNewAvatar = $avatar !== null
             && $avatar->getError() !== UPLOAD_ERR_NO_FILE;
 
@@ -147,7 +167,6 @@ class Users extends BaseController
                 ],
             ];
         }
-        
 
         if (! $this->validate($rules)) {
             return redirect()->back()
@@ -156,8 +175,8 @@ class Users extends BaseController
         }
 
         $updatedData = [
-            'username'  => $this->request->getPost('username'),
-            'full_name' => $this->request->getPost('full_name'),
+            'username' => trim($this->request->getPost('username')),
+            'full_name' => trim($this->request->getPost('full_name')),
         ];
 
         if ($hasNewAvatar && $avatar->isValid()) {

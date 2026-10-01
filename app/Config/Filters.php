@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\AuthFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -34,6 +35,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'auth'          => AuthFilter::class,
     ];
 
     /**
@@ -51,13 +53,13 @@ class Filters extends BaseFilters
      */
     public array $required = [
         'before' => [
-            'forcehttps', // Force Global Secure Requests
-            'pagecache',  // Web Page Caching
+            'forcehttps',
+            'pagecache',
         ],
         'after' => [
-            'pagecache',   // Web Page Caching
-            'performance', // Performance Metrics
-            'toolbar',     // Debug Toolbar
+            'pagecache',
+            'performance',
+            'toolbar',
         ],
     ];
 
@@ -86,13 +88,6 @@ class Filters extends BaseFilters
      * List of filter aliases that works on a
      * particular HTTP method (GET, POST, etc.).
      *
-     * Example:
-     * 'POST' => ['foo', 'bar']
-     *
-     * If you use this, you should disable auto-routing because auto-routing
-     * permits any HTTP method to access a controller. Accessing the controller
-     * with a method you don't expect could bypass the filter.
-     *
      * @var array<string, list<string>>
      */
     public array $methods = [];
@@ -100,9 +95,6 @@ class Filters extends BaseFilters
     /**
      * List of filter aliases that should run on any
      * before or after URI patterns.
-     *
-     * Example:
-     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      *
      * @var array<string, array<string, list<string>>>
      */

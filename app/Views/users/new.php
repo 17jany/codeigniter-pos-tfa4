@@ -1,6 +1,7 @@
 <section class="user-form-section">
     <div class="form-card">
         <p class="page-label">USER MANAGEMENT</p>
+
         <h1>Add New User</h1>
 
         <p class="page-description">
@@ -26,23 +27,57 @@
 
             <div class="form-group">
                 <label for="username">Username *</label>
+
                 <input
                     type="text"
                     id="username"
                     name="username"
-                    value="<?= old('username') ?>"
+                    value="<?= esc(old('username')) ?>"
                     maxlength="50"
+                    autocomplete="username"
                 >
             </div>
 
             <div class="form-group">
                 <label for="full_name">Full Name *</label>
+
                 <input
                     type="text"
                     id="full_name"
                     name="full_name"
-                    value="<?= old('full_name') ?>"
+                    value="<?= esc(old('full_name')) ?>"
                     maxlength="100"
+                    autocomplete="name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password *</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    minlength="8"
+                    maxlength="255"
+                    autocomplete="new-password"
+                >
+
+                <small>
+                    Password must contain at least 8 characters.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm">Confirm Password *</label>
+
+                <input
+                    type="password"
+                    id="password_confirm"
+                    name="password_confirm"
+                    minlength="8"
+                    maxlength="255"
+                    autocomplete="new-password"
                 >
             </div>
 
@@ -119,6 +154,12 @@
     .form-group input:focus {
         border-color: #111111;
         outline: none;
+    }
+
+    .form-group small {
+        display: block;
+        margin-top: 7px;
+        color: #666666;
     }
 
     .form-actions {
